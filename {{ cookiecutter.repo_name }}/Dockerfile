@@ -1,7 +1,6 @@
-# Ubuntu 16.04 (xenial) from 2018-02-28
-# https://github.com/docker-library/official-images/commit/8728671fdca3dfc029be4ab838ab5315aa125181
-FROM analytics-base:latest 
+ARG version
 
+FROM analytics-base:$version
 LABEL maintainer="Neighborhoods <neighborhoods.engineering@neighborhoods.com>"
 
 ARG directory

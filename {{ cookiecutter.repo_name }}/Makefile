@@ -13,19 +13,15 @@ BUCKET = {{ cookiecutter.s3_bucket }}
 PROFILE = {{ cookiecutter.aws_profile }}
 PROJECT_NAME = {{ cookiecutter.repo_name }}
 PYTHON_INTERPRETER = {{ cookiecutter.python_interpreter }}
-BASE_TAG = {{ cookiecutter.base_image_version }}
+IMAGE_VERSION = {{ cookiecutter.base_image_version }}
 SLASH = /
 
-BASE_IMAGE_NAME=analytics-base
-AWS_IMAGE_PREFIX=datascience
 AWS_ECR_SERVER=${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
-BASE_AWS_TAG=${AWS_ECR_SERVER}/${AWS_IMAGE_PREFIX}/${BASE_IMAGE_NAME}:${BASE_TAG}
+AWS_BASE_IMAGE=${AWS_ECR_SERVER}/datascience/analytics-base:${IMAGE_VERSION}
 
 #################################################################################
 # PROJECT RULES                                                                 #
 #################################################################################
-
-
 
 #################################################################################
 # COMMANDS                                                                      #
@@ -117,12 +113,15 @@ docker_login:
 
 ## pull the analytics-base image
 pull_base_image: docker_login
-	docker pull ${BASE_AWS_TAG} \
-        && docker tag ${BASE_AWS_TAG} ${BASE_IMAGE_NAME}:latest 
+	docker pull ${AWS_BASE_IMAGE} \
+        && docker tag ${AWS_BASE_IMAGE} analytics-base:${IMAGE_VERSION}
 
 ## Set up docker environment
 create_docker: pull_base_image
-	docker build --build-arg directory=$(SLASH)$(PROJECT_DIR) -t $(PROJECT_NAME) .
+	docker build  \
+            --build-arg version=$(IMAGE_VERSION) \
+            --build-arg directory=$(SLASH)$(PROJECT_DIR) \
+            -t $(PROJECT_NAME) .
 
 ## Run docker in container
 run_docker:
