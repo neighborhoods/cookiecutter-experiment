@@ -107,12 +107,16 @@ else
 	aws s3 sync s3://$(BUCKET)/logs/ logs/ --profile $(PROFILE)
 endif
 
+populate_aws_id:
+	export AWS_ACCOUNT_ID=$(shell aws sts get-caller-identity \
+                                --output text --query 'Account')
+
 ## Log in to our ECR registry with docker
 docker_login:
 	$$(aws ecr get-login --no-include-email)
 
 ## pull the analytics-base image
-pull_base_image: docker_login
+pull_base_image: docker_login populate_aws_id
 	docker pull ${AWS_BASE_IMAGE} \
         && docker tag ${AWS_BASE_IMAGE} analytics-base:${IMAGE_VERSION}
 
