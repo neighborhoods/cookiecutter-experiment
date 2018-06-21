@@ -128,8 +128,12 @@ create_docker: pull_base_image
             -t $(PROJECT_NAME) .
 
 ## Run docker in container
-run_docker:
-	docker run -ti -p 7777:8888 --name=$(PROJECT_NAME) $(PROJECT_NAME):latest
+run_docker: populate_aws_id
+	docker run -ti -p 7777:8888 \
+            -e "AWS_ACCOUNT_ID=$(AWS_ACCOUNT_ID)" \
+            -e "AWS_ACCESS_KEY_ID=$(shell aws --profile default configure get aws_access_key_id)" \
+            -e "AWS_SECRET_ACCESS_KEY=$(shell aws --profile default configure get aws_secret_access_key)" \
+            --name=$(PROJECT_NAME) $(PROJECT_NAME):latest
 
 ## Enter the running docker container
 enter_docker:
