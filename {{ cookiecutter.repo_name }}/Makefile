@@ -120,6 +120,8 @@ pull_base_image: docker_login populate_aws_id
 	docker pull ${AWS_BASE_IMAGE} \
         && docker tag ${AWS_BASE_IMAGE} analytics-base:${IMAGE_VERSION}
 
+## if JUPYTER_PASSWORD is not set, will prompt the user for a password.
+## you will need this password later to access Jupyter Notebook.
 jupyter_notebook_config.json:
 	$(PYTHON_INTERPRETER) create_notebook_config.py
 
