@@ -1,10 +1,8 @@
-# Cookiecutter Data Science
+# Neighborhoods.com Cookiecutter Data Science
 
-_A logical, reasonably standardized, but flexible project structure for doing and sharing data science work._
+Neighborhoods.com's fork of Cookiecutter Data Science to standardize experimental workflows.
 
-
-#### [Project homepage](http://drivendata.github.io/cookiecutter-data-science/)
-
+#### [Cookiecutter homepage](http://drivendata.github.io/cookiecutter-data-science/)
 
 ### Requirements to use the cookiecutter template:
 -----------
@@ -15,22 +13,10 @@ _A logical, reasonably standardized, but flexible project structure for doing an
 $ pip install cookiecutter
 ```
 
-or
-
-``` bash
-$ conda config --add channels conda-forge
-$ conda install cookiecutter
-```
-
-
 ### To start a new project, run:
 ------------
 
-    cookiecutter https://github.com/drivendata/cookiecutter-data-science
-
-
-[![asciicast](https://asciinema.org/a/9bgl5qh17wlop4xyxu9n9wr02.png)](https://asciinema.org/a/9bgl5qh17wlop4xyxu9n9wr02)
-
+    cookiecutter https://github.com/neighborhoods/cookiecutter-experiment
 
 ### The resulting directory structure
 ------------
@@ -39,6 +25,7 @@ The directory structure of your new project looks like this:
 
 ```
 ├── LICENSE
+├── Dockerfile         <- Dockerfile for building experimental container.
 ├── Makefile           <- Makefile with commands like `make data` or `make train`
 ├── README.md          <- The top-level README for developers using this project.
 ├── data
@@ -50,6 +37,8 @@ The directory structure of your new project looks like this:
 ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
 │
 ├── models             <- Trained and serialized models, model predictions, or model summaries
+│
+├── logs               <- Logs from run experiments.
 │
 ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
 │                         the creator's initials, and a short `-` delimited description, e.g.
@@ -67,25 +56,25 @@ The directory structure of your new project looks like this:
 │   ├── __init__.py    <- Makes src a Python module
 │   │
 │   ├── data           <- Scripts to download or generate data
-│   │   └── make_dataset.py
 │   │
 │   ├── features       <- Scripts to turn raw data into features for modeling
-│   │   └── build_features.py
 │   │
 │   ├── models         <- Scripts to train models and then use trained models to make
-│   │   │                 predictions
-│   │   ├── predict_model.py
-│   │   └── train_model.py
-│   │
+│   │                     predictions
 │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-│       └── visualize.py
 │
+├── create_notebook_config.py <- script for creating Jupyter notebook configuration.
 └── tox.ini            <- tox file with settings for running tox; see tox.testrun.org
 ```
 
-## Contributing
+### Useful Make rules
+------------
 
-We welcome contributions! [See the docs for guidelines](https://drivendata.github.io/cookiecutter-data-science/#contributing).
+* `sync_data_from_s3`: sync local copy of data with the version on the congifured S3 bucket.
+* `sync_data_to_s3`: sync the version of the data on the congifured S3 bucket with the local copy.
+* `create_docker`: Build the experiment's Docker image.
+* `run_docker`: Run a Docker container of the experiment's image in interactive mode.
+* `start_jupyter`: Start Jupyter Notebook running in a Docker container.
 
 ### Installing development requirements
 ------------
