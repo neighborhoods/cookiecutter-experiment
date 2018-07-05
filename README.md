@@ -70,6 +70,9 @@ The directory structure of your new project looks like this:
 ### Useful Make rules
 ------------
 
+The Makefile is self-documenting, so simply typing `make` will provide the user with a list of
+available Make rules. Some of the more useful are listed here.
+
 * `sync_data_from_s3`: sync local copy of data with the version on the congifured S3 bucket.
 * `sync_data_to_s3`: sync the version of the data on the congifured S3 bucket with the local copy.
 * `create_docker`: Build the experiment's Docker image.
