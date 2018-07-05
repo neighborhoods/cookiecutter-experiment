@@ -7,4 +7,5 @@ ARG directory
 
 WORKDIR $directory
 
+COPY jupyter_notebook_config.json /root/.jupyter/jupyter_notebook_config.json
 ADD . $directory

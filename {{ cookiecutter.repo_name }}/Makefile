@@ -120,8 +120,13 @@ pull_base_image: docker_login populate_aws_id
 	docker pull ${AWS_BASE_IMAGE} \
         && docker tag ${AWS_BASE_IMAGE} analytics-base:${IMAGE_VERSION}
 
+## if JUPYTER_PASSWORD is not set, will prompt the user for a password.
+## you will need this password later to access Jupyter Notebook.
+jupyter_notebook_config.json:
+	$(PYTHON_INTERPRETER) create_notebook_config.py
+
 ## Set up docker environment
-create_docker: pull_base_image
+create_docker: pull_base_image jupyter_notebook_config.json
 	docker build  \
             --build-arg version=$(IMAGE_VERSION) \
             --build-arg directory=$(SLASH)$(PROJECT_DIR) \
@@ -134,6 +139,17 @@ run_docker: populate_aws_id
             -e "AWS_ACCESS_KEY_ID=$(shell aws --profile default configure get aws_access_key_id)" \
             -e "AWS_SECRET_ACCESS_KEY=$(shell aws --profile default configure get aws_secret_access_key)" \
             --name=$(PROJECT_NAME) $(PROJECT_NAME):latest
+
+## Run Jupyter in a container and hit it in Chrome
+start_jupyter: populate_aws_id
+	docker run -dt -p 7777:8888 \
+            -e "AWS_ACCOUNT_ID=$(AWS_ACCOUNT_ID)" \
+            -e "AWS_ACCESS_KEY_ID=$(shell aws --profile default configure get aws_access_key_id)" \
+            -e "AWS_SECRET_ACCESS_KEY=$(shell aws --profile default configure get aws_secret_access_key)" \
+            --name=$(PROJECT_NAME) $(PROJECT_NAME):latest \
+	    jupyter notebook --ip 0.0.0.0 --allow-root \
+	&& sleep 1 \
+        && /usr/bin/open -a "/Applications/Google Chrome.app" 'http::/localhost:7777'
 
 ## Enter the running docker container
 enter_docker:
