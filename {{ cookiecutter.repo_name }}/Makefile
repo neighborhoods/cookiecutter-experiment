@@ -147,9 +147,9 @@ test_environment:
 ## Render and insert report notebooks into DSDocs Jekyll site.
 insert_into_dsdocs:
 	$(PYTHON_INTERPRETER) "${DSDOCS_DIR}/scripts/render_and_insert_all.py" \
-	    ./notebooks/report/ \
+	    ./notebooks/ \
             "${DSDOCS_DIR}/data-science-documentation/" \
-	    ./notebooks/report/metadata.yaml
+	    ./notebooks/metadata.yaml
 
 #################################################################################
 # Self Documenting Commands                                                     #
