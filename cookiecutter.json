@@ -8,4 +8,5 @@
     "aws_profile": "default",
     "python_interpreter": ["python", "python3"],
     "base_image_version": "{{ '0.0.0' }}"
+    "dsdocs_repo_dir": "Path to the directory for the data-science-documentation repo."
 }
