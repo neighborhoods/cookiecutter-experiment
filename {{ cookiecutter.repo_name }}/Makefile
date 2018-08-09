@@ -14,6 +14,7 @@ PROFILE = {{ cookiecutter.aws_profile }}
 PROJECT_NAME = {{ cookiecutter.repo_name }}
 PYTHON_INTERPRETER = {{ cookiecutter.python_interpreter }}
 IMAGE_VERSION = {{ cookiecutter.base_image_version }}
+DSDOCS_DIR = {{ cookiecutter.dsdocs_repo_dir }}
 SLASH = /
 
 AWS_ECR_SERVER=${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
@@ -158,6 +159,13 @@ enter_docker:
 ## Test python environment is setup correctly
 test_environment:
 	$(PYTHON_INTERPRETER) test_environment.py
+
+## Render and insert report notebooks into DSDocs Jekyll site.
+insert_into_dsdocs:
+	$(PYTHON_INTERPRETER) "${DSDOCS_DIR}/scripts/render_and_insert_all.py" \
+	    ./notebooks/ \
+            "${DSDOCS_DIR}/data-science-documentation/" \
+	    ./notebooks/metadata.yaml
 
 #################################################################################
 # Self Documenting Commands                                                     #
