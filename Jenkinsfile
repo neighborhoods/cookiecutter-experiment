@@ -2,16 +2,20 @@ pipeline {
     agent any
 
     stages{
+        stage('Prep') {
+            steps {
+                sh 'pip install pipenv'
+                sh 'pipenv install pytest'
+            }
+        }
         stage('Unit Testing') {
             steps {
-                sh 'pip install pytest --user'
-                sh 'python -m pytest'
+                sh 'pipenv run python -m pytest'
             }
         }
         stage('Linting/Style Checking') {
             steps {
-                sh 'pip install flake8 --user'
-                sh 'python -m flake8'
+                sh 'pipenv run python -m flake8'
             }
         }
 
