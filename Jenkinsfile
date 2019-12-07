@@ -4,18 +4,18 @@ pipeline {
     stages{
         stage('Prep') {
             steps {
-                sh 'pip install pipenv'
-                sh 'pipenv install pytest'
+                sh 'pip install pytest --user'
+                sh 'pip install flake8 --user'
             }
         }
         stage('Unit Testing') {
             steps {
-                sh 'pipenv run python -m pytest'
+                sh 'python -m pytest'
             }
         }
         stage('Linting/Style Checking') {
             steps {
-                sh 'pipenv run python -m flake8'
+                sh 'python -m flake8'
             }
         }
 
