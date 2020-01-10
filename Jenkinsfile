@@ -1,13 +1,6 @@
 pipeline {
-    agent any
-
+    agent { dockerfile true }
     stages{
-        stage('Prep') {
-            steps {
-                sh 'pip install pytest --user'
-                sh 'pip install flake8 --user'
-            }
-        }
         stage('Unit Testing') {
             steps {
                 sh 'python -m pytest'
